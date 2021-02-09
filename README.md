@@ -42,5 +42,7 @@ python3+mysql
 ![采集](https://github.com/Digeya/collect-url-tools-base-keywords-/blob/main/2.png)
 ![结果](https://github.com/Digeya/collect-url-tools-base-keywords-/blob/main/1.png)
 
-#### 感谢   
+#### 后续
+技术交练学习群：789599134
+互相学习。
   
