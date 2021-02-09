@@ -13,16 +13,18 @@
 python3+mysql
 
 > $ pip install request
+
 下载lxml
 地址：http://www.lfd.uci.edu/~gohlke/pythonlibs/#lxml
+
+#
 > $ python -m pip install 对应本地路径./lxml-3.7.1-cp35-cp35m-win_amd64.whl
 
 
-#### 获取博客模板
+#### 获取工具
 
 > $ git clone https://github.com/leopardpan/leopardpan.github.io.git
 
-或者直接[下载博客](https://github.com/leopardpan/leopardpan.github.io/archive/master.zip)   
 
 
 ### 提示
