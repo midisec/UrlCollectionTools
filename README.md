@@ -23,8 +23,7 @@ python3+mysql
 
 #### 获取工具
 
-> $ git clone https://github.com/leopardpan/leopardpan.github.io.git
-
+> $ git clone https://github.com/Digeya/collect-url-tools-base-keywords-.git
 
 
 ### 提示
