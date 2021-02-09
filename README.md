@@ -5,8 +5,8 @@
 
 
 ### Tools详情
-基于python3的小脚本，目前仅支持bing国际引擎采集，由于搜索引擎的不稳定性后续会根据情况更新或新增其他引擎！
-目前没有实现多线程，等待后续改进
+基于python3的小脚本，自带去重功能，目前仅支持bing国际引擎采集，由于搜索引擎的不稳定性后续会根据情况更新或新增其他引擎！
+目前没有实现多线程，等待后续改进！
 
 ### 使用条件
 
@@ -39,8 +39,8 @@ python3+mysql
 ### 效果预览
 
 
-
-
+![采集](https://github.com/Digeya/collect-url-tools-base-keywords-/blob/main/2.png)
+![结果](https://github.com/Digeya/collect-url-tools-base-keywords-/blob/main/1.png)
 
 #### 感谢   
   
