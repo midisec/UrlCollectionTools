@@ -43,6 +43,8 @@ python3+mysql
 ![结果](https://github.com/Digeya/collect-url-tools-base-keywords-/blob/main/1.png)
 
 #### 后续
-技术交练学习群：789599134
+欢迎交流学习，有问题直接issue
 互相学习。
+
+目前该项目是六个月之前了，这个暑假会想办法更新一下。
   
