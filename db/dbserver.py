@@ -5,7 +5,7 @@ class MySQLCommand(object):
         self.host = 'localhost'
         self.port = 3306  # 端口号
         self.user = 'root'  # 用户名
-        self.password = "wanmidi"  # 密码
+        self.password = "*"  # 密码
         self.db = "url"  # 库
         self.table = "url_tables"  # 表
 
