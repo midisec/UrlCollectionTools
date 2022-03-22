@@ -5,7 +5,7 @@ class MySQLCommand(object):
         self.host = 'localhost'
         self.port = 3306  # 端口号
         self.user = 'root'  # 用户名
-        self.password = "*"  # 密码
+        self.password = "wanmidi"  # 密码
         self.db = "url"  # 库
         self.table = "url_tables"  # 表
 
@@ -30,7 +30,6 @@ class MySQLCommand(object):
             return 0
         # 数据不存在才执行下面的插入操作
         try:
-
             sql = "INSERT INTO url_tables (url) VALUES ('%s')" % (url)
             # print(sql)
             # INSERT INTO url_tables VALUES ('test');
