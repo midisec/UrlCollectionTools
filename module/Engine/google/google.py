@@ -3,11 +3,14 @@ from lxml import etree
 import re, time
 import urllib3
 import config
+from db.dbserver import MySQLCommand
 
 
 class GoogleEngine(object):
     def __init__(self, keyword_list):
         urllib3.disable_warnings()
+        self.mysql = MySQLCommand()
+        self.mysql.connectMysql()
         self.keyword_list = [i.strip() for i in keyword_list]
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/49.0',
@@ -56,6 +59,10 @@ class GoogleEngine(object):
     def set_xpath(self):
         pass
 
+    def insert_database(self, s1):
+        for url in s1:
+            self.mysql.insertData(url)
+
     def run(self):
         s1 = set()
         for keyword in self.keyword_list:
@@ -63,7 +70,7 @@ class GoogleEngine(object):
             for url in self.produce(keyword):
                 content = self.request(url)
                 self.withdraw(content, s1)
-                print(s1)
+            self.insert_database(s1)
 
 
 if __name__ == '__main__':
