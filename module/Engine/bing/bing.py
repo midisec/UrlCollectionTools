@@ -3,6 +3,8 @@ from lxml import etree
 import re
 import time
 from db.dbserver import MySQLCommand
+from concurrent.futures import ThreadPoolExecutor
+
 
 class BingEngine(object):
     def __init__(self, keyword_list):
@@ -21,6 +23,8 @@ class BingEngine(object):
                       "//li[@class='b_algo']//div[@class='b_attribution']/cite//text()",
                       "//div[@class='b_caption']//div[@class='b_attribution']//cite//text()"
                       ]
+        self.pool_size = 5
+        self.pool = ThreadPoolExecutor(self.pool_size)
 
     @staticmethod
     def produce(keyword):
@@ -64,10 +68,25 @@ class BingEngine(object):
             self.insert_database(s1)
             # yield s1
 
+    def task_single_keyword(self, keyword):
+        s1 = set()
+        for url in self.produce(keyword):
+            content = self.request(url)
+            self.withdraw(content, s1)
+        return s1
+
+    def insert_database_asy(self, future):
+        s1 = future.result()
+        self.insert_database(s1)
+
+    def asy_run(self):
+        for keyword in self.keyword_list:
+            s1 = self.pool.submit(self.task_single_keyword, keyword)
+            s1.add_done_callback(self.insert_database_asy)
+
 
 if __name__ == '__main__':
-    test_list = ['cms', '后台']
+    test_list = ['cms', '后台', 'cms1', '后台1', 'cms2', '后台2', 'cms3', '后台3', 'cms4', '后台4']
     bing = BingEngine(test_list)
-    s1 = bing.run()
-    for s in s1:
-        print(s)
+    # s1 = bing.run()
+    bing.asy_run()

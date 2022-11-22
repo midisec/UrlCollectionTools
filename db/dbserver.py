@@ -1,4 +1,5 @@
 import pymysql
+import threading
 
 class MySQLCommand(object):
     def __init__(self):
@@ -8,6 +9,7 @@ class MySQLCommand(object):
         self.password = "*"  # 密码
         self.db = "url"  # 库
         self.table = "url_tables"  # 表
+        self.lock = threading.Lock()
 
     def connectMysql(self):
         try:
@@ -23,8 +25,10 @@ class MySQLCommand(object):
         table = "url_tables"  # 要操作的表格
 
         sqlExit = "SELECT url FROM url_tables  WHERE url = '%s'" % (url)
+        self.lock.acquire()
         print(sqlExit)
         res = self.cursor.execute(sqlExit)
+        self.lock.release()
         if res:  # res为查询到的数据条数如果大于0就代表数据已经存在
             print("数据已存在", res)
             return 0
@@ -36,9 +40,11 @@ class MySQLCommand(object):
             #拼装后的sql如下
             # INSERT INTO home_list (img_path, url, id, title) VALUES ("https://img.huxiucdn.com.jpg"," https://www.huxiu.com90.html"," 12"," ")
             try:
+                self.lock.acquire()
                 result = self.cursor.execute(sql)
                 insert_id = self.conn.insert_id()  # 插入成功后返回的id
                 self.conn.commit()
+                self.lock.release()
                 # 判断是否执行成功
                 if result:
                     print("插入成功", insert_id)

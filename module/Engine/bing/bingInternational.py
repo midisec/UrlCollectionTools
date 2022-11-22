@@ -3,6 +3,8 @@ from lxml import etree
 import re
 import time
 from db.dbserver import MySQLCommand
+from concurrent.futures import ThreadPoolExecutor
+
 
 class BingInternationalEngine(object):
     def __init__(self, keyword_list):
@@ -21,10 +23,12 @@ class BingInternationalEngine(object):
                       "//li[@class='b_algo']//div[@class='b_attribution']/cite//text()",
                       "//div[@class='b_caption']//div[@class='b_attribution']//cite//text()"
                       ]
+        self.pool_size = 5
+        self.pool = ThreadPoolExecutor(self.pool_size)
 
     @staticmethod
     def produce(keyword):
-        return ["https://cn.bing.com/search?q={}&qs=n&sp=-1&sp=-1&pq={}&sc=4-8&sk=&cvid=3C863030DEEA4A6F8CB1FB27CCAFCCE7&first={}&ubiroff=1&FORM=PERE&ensearch=1".format(
+        return ["https://www.bing.com/search?q={}&qs=n&sp=-1&sp=-1&pq={}&sc=4-8&sk=&cvid=3C863030DEEA4A6F8CB1FB27CCAFCCE7&first={}&ubiroff=1&FORM=PERE&ensearch=1".format(
                     keyword, keyword, i) for i in range(1, 1000, 10)]
 
     def request(self, url):
@@ -63,11 +67,24 @@ class BingInternationalEngine(object):
                 self.withdraw(content, s1)
             self.insert_database(s1)
 
+    def task_single_keyword(self, keyword):
+        s1 = set()
+        for url in self.produce(keyword):
+            content = self.request(url)
+            self.withdraw(content, s1)
+        return s1
+
+    def insert_database_asy(self, future):
+        s1 = future.result()
+        self.insert_database(s1)
+
+    def asy_run(self):
+        for keyword in self.keyword_list:
+            s1 = self.pool.submit(self.task_single_keyword, keyword)
+            s1.add_done_callback(self.insert_database_asy)
 
 
 if __name__ == '__main__':
     test_list = ['cms', '后台']
-    bing = BingEngine(test_list)
-    s1 = bing.run()
-    for s in s1:
-        print(s)
+    bing = BingInternationalEngine(test_list)
+    bing.asy_run()

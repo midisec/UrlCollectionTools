@@ -6,18 +6,21 @@ import threading
 
 def work1(keyword_list):
     bing = BingEngine(keyword_list)
-    bing.run()
+    # bing.run()
+    bing.asy_run()
 
 
 def work2(keyword_list):
     bing = BingInternationalEngine(keyword_list)
-    bing.run()
+    # bing.run()
+    bing.asy_run()
 
 
 if __name__ == '__main__':
-    test_list = ['cms', '后台']
+    with open('keywords.txt', 'r', encoding='utf-8') as f:
+        keyword_list = f.readlines()
     threads = []
-    threads.append(threading.Thread(target=work1,args=(test_list,)))
-    threads.append(threading.Thread(target=work2,args=(test_list,)))
+    threads.append(threading.Thread(target=work1,args=(keyword_list,)))
+    threads.append(threading.Thread(target=work2,args=(keyword_list,)))
     for t in threads:
         t.start()
